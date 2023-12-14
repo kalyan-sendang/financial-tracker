@@ -1,8 +1,8 @@
 package com.project.financialtracker.config;
 
 
-import com.project.financialtracker.service.userService.CustomUserDetailService;
-import com.project.financialtracker.service.userService.JwtService;
+import com.project.financialtracker.user.CustomUserDetailService;
+import com.project.financialtracker.token.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +23,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    @Autowired
     private CustomUserDetailService userDetailsService;
 
     @Override

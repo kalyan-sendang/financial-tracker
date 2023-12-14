@@ -1,6 +1,6 @@
 package com.project.financialtracker.config;
 
-import com.project.financialtracker.service.userService.CustomUserDetailService;
+import com.project.financialtracker.user.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,6 +37,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer -> configurer.requestMatchers("/api/auth/user/**").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/api/wallet").authenticated()
+                .requestMatchers("/api/wallet/**").authenticated()
+                .requestMatchers("/api/expense").authenticated()
+                .requestMatchers("/api/expense/**").authenticated()
+                .requestMatchers("/api/income").authenticated()
+                .requestMatchers("/api/income/**").authenticated()
         );
         //disable cross site resource forgery(CSRF)
         http.csrf(AbstractHttpConfigurer::disable);
