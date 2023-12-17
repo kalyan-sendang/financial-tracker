@@ -43,6 +43,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/expense/**").authenticated()
                 .requestMatchers("/api/income").authenticated()
                 .requestMatchers("/api/income/**").authenticated()
+                .requestMatchers("/api/category").authenticated()
+                .requestMatchers("/api/category/**").authenticated()
+                .requestMatchers("/api/notification").authenticated()
+                .requestMatchers("/api/unseennotification").authenticated()
+
         );
         //disable cross site resource forgery(CSRF)
         http.csrf(AbstractHttpConfigurer::disable);

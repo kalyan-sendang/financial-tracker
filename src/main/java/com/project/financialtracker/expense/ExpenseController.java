@@ -1,5 +1,6 @@
 package com.project.financialtracker.expense;
 
+import com.project.financialtracker.category.Category;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
@@ -21,6 +22,8 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    static final String ERROR = "Internal Server Error";
+
     @GetMapping("/expense")
     public ResponseEntity<ResponseWrapper<List<ExpenseDto>>> getAllExpense(HttpServletRequest request) {
         ResponseWrapper<List<ExpenseDto>> response = new ResponseWrapper<>();
@@ -39,7 +42,7 @@ public class ExpenseController {
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -49,27 +52,45 @@ public class ExpenseController {
         ResponseWrapper<ExpenseDto> response = new ResponseWrapper<>();
         try{
             Integer id = (Integer) request.getAttribute("userId");
-            Expense expense = new Expense();
             User user = new User();
             Wallet wallet = new Wallet();
-            user.setUserId(id);
             wallet.setWalletId(walletId);
-            expense.setAmount(expenseRequest.getAmount());
-            expense.setCategory(expenseRequest.getCategory());
-            expense.setNote(expenseRequest.getNote());
-            expense.setDate(expenseRequest.getDate());
-            expense.setUser(user);
+            user.setUserId(id);
+            Expense expense = new Expense(expenseRequest, user);
             expense.setWallet(wallet);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
-            response.setMessage("Your wallet is credited by amount RS."+ expense.getAmount());
+            response.setMessage("Your wallet is debited by amount RS."+ expense.getAmount());
             response.setResponse(expenseService.addExpense(expense));
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             response.setSuccess(false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+//    @PutMapping("/expense/{expenseId}")
+//    public ResponseEntity<ResponseWrapper<ExpenseDto>> updateExpense(@PathVariable Integer expenseId, @RequestBody ExpenseRequest expenseRequest) {
+//        ResponseWrapper<ExpenseDto> response = new ResponseWrapper<>();
+//        try {
+//            if (expenseService.updateExpense(expenseId, expenseRequest) != null) {
+//                response.setStatusCode(HttpStatus.CREATED.value());
+//                response.setMessage("Your wallet is credited by amount Rs." + expenseRequest.getAmount());
+//                response.setSuccess(true);
+//                response.setResponse(expenseService.updateExpense(expenseId, expenseRequest));
+//                return ResponseEntity.ok(response);
+//            }else{
+//                response.setStatusCode(HttpStatus.NOT_FOUND.value());
+//                response.setMessage("Expense not found");
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//            }
+//        } catch (Exception e) {
+//            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//            response.setMessage(ERROR);
+//            response.setSuccess(false);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
 }

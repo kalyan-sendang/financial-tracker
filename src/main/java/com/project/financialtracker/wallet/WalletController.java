@@ -75,7 +75,7 @@ public class WalletController {
             Integer userId = (Integer) request.getAttribute(ID);
             ResponseWrapper<WalletDto> response = new ResponseWrapper<>();
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("Wallet  successfully");
+            response.setMessage("Wallet updated successfully");
             response.setSuccess(true);
             response.setResponse(walletService.updateWallet(walletId, name, userId));
             return ResponseEntity.ok(response);
@@ -89,7 +89,7 @@ public class WalletController {
         try{
             walletService.deleteWallet(walletId);
             ResponseWrapper<Void> response = new ResponseWrapper<>();
-            response.setMessage("Wallet with"+ walletId+" deleted successfully");
+            response.setMessage("Wallet with Id "+ walletId+" deleted successfully");
             response.setSuccess(true);
             response.setStatusCode(HttpStatus.OK.value());
             return ResponseEntity.ok(response);

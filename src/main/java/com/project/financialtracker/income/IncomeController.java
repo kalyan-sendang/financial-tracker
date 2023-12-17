@@ -61,7 +61,7 @@ public class IncomeController {
             income.setWallet(wallet);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
-            response.setMessage("Your wallet is debited by amount RS."+ income.getAmount());
+            response.setMessage("Your wallet is credited by amount RS."+ income.getAmount());
             response.setResponse(incomeService.addIncome(income));
             return ResponseEntity.ok(response);
         }catch (Exception e){

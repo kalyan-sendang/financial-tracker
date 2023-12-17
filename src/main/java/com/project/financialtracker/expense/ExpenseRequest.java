@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExpenseRequest {
-    private String category;
+    private Integer categoryId;
     private Double amount;
     private String note;
     private LocalDate date;

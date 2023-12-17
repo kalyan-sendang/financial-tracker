@@ -32,9 +32,9 @@ public class WalletService {
                 newWallet.setName(name);
                 Wallet wallet = walletRepository.save(newWallet);
                 return new WalletDto(wallet.getWalletId(), wallet.getName());
+            }else{
+                throw new CustomException("User with " + userId+ " not found");
             }
-        }else{
-            throw new CustomException("User with " + userId+ "not found");
         }
         return null;
     }
