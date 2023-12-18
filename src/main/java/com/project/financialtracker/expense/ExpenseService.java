@@ -58,7 +58,7 @@ public class ExpenseService {
 
         checkAndSendNotification(userId,categoryId,maxLimit);
 
-        return new ExpenseDto(expense);
+        return new ExpenseDto(newExpense);
     }
 
     public void checkAndSendNotification(Integer userId, Integer categoryId, Double maxLimit){

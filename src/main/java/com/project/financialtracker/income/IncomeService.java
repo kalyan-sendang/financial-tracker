@@ -1,5 +1,6 @@
 package com.project.financialtracker.income;
 
+import com.project.financialtracker.expense.ExpenseDto;
 import com.project.financialtracker.wallet.Wallet;
 import com.project.financialtracker.wallet.WalletRepository;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,13 @@ public class IncomeService {
     }
 
     public List<IncomeDto> getIncome(Integer userId){
-        List<Income> incomeList = incomeRepository.findIncomeByUserId(userId);
-        return incomeList.stream().map(income -> new IncomeDto(income.getIncomeId(), income.getAmount(), income.getCategory(), income.getNote(),income.getDate())).toList();
+        List<Income> incomeList = incomeRepository.getIncomeByUserId(userId);
+        return incomeList.stream().map(IncomeDto::new).toList();
     }
 
     public IncomeDto addIncome(Income income){
         Income newIncome = incomeRepository.save(income);
+        System.out.println(newIncome.getCategory().getName());
         Integer walletId = newIncome.getWallet().getWalletId();
         Optional<Wallet> optionalWallet = walletRepository.findById(walletId);
         if (optionalWallet.isPresent()) {
@@ -32,6 +34,6 @@ public class IncomeService {
             wallet.setAmount(wallet.getAmount() + income.getAmount());
             walletRepository.save(wallet);
         }
-        return new IncomeDto(newIncome.getIncomeId(), newIncome.getAmount(), newIncome.getCategory(), newIncome.getNote(), newIncome.getDate());
+        return new IncomeDto(newIncome);
     }
 }

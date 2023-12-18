@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class IncomeRequest {
     private Double amount;
-    private String category;
+    private Integer categoryId;
     private LocalDate date;
     private String note;
 }

@@ -1,6 +1,7 @@
 package com.project.financialtracker.user;
 
 import com.project.financialtracker.utils.ResponseWrapper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +80,15 @@ public class UserController {
             response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    @GetMapping("/userprofile")
+    public ResponseEntity<UserProfile> userProfile(HttpServletRequest request){
+        Integer userId = (Integer) request.getAttribute("userId");
+        String userName = (String) request.getAttribute("userName");
+        String email = (String) request.getAttribute("email");
+        String profession = (String) request.getAttribute("profession");
+        UserProfile userProfile = new UserProfile(userId, userName, email, profession);
+        return ResponseEntity.ok(userProfile);
     }
 }

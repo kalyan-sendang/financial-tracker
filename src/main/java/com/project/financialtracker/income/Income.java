@@ -1,10 +1,13 @@
 package com.project.financialtracker.income;
 
+import com.project.financialtracker.category.Category;
 import com.project.financialtracker.expense.Expense;
+import com.project.financialtracker.expense.ExpenseRequest;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.wallet.Wallet;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "income")
 public class Income {
     @Id
@@ -19,8 +23,9 @@ public class Income {
     @Column(name = "income_id")
     private Integer incomeId;
 
-    @Column(name = "category")
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "amount")
     private Double amount;
@@ -38,5 +43,17 @@ public class Income {
     @ManyToOne
     @JoinColumn(name = "walletId", nullable = false)
     private Wallet wallet;
+
+
+    public Income(IncomeRequest incomeRequest, User user) {
+        this.user = user;
+        Category newCategory = new Category();
+        newCategory.setCategoryId(incomeRequest.getCategoryId());
+        this.category = newCategory;
+        this.note = incomeRequest.getNote();
+        this.date = incomeRequest.getDate();
+        this.amount = incomeRequest.getAmount();
+    }
+
 
 }

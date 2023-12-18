@@ -48,16 +48,12 @@ public class IncomeController {
         ResponseWrapper<IncomeDto> response = new ResponseWrapper<>();
         try{
             Integer id = (Integer) request.getAttribute("userId");
-            Income income = new Income();
             User user = new User();
             Wallet wallet = new Wallet();
+            wallet.setWalletId(walletId);
             user.setUserId(id);
             wallet.setWalletId(walletId);
-            income.setAmount(incomeRequest.getAmount());
-            income.setCategory(incomeRequest.getCategory());
-            income.setNote(incomeRequest.getNote());
-            income.setDate(incomeRequest.getDate());
-            income.setUser(user);
+            Income income = new Income(incomeRequest, user);
             income.setWallet(wallet);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
