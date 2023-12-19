@@ -58,6 +58,7 @@ public class ExpenseController {
             user.setUserId(id);
             Expense expense = new Expense(expenseRequest, user);
             expense.setWallet(wallet);
+            System.out.println("asdfasfasdf"+expense.getDate());
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Your wallet is debited by amount RS."+ expense.getAmount());

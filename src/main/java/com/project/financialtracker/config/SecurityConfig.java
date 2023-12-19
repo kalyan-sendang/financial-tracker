@@ -48,8 +48,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/expense/**").authenticated()
                         .requestMatchers("/api/income").authenticated()
                         .requestMatchers("/api/income/**").authenticated()
-                        .requestMatchers("/api/category").authenticated()
-                        .requestMatchers("/api/category/**").authenticated()
+                        .requestMatchers("/api/expenseCategory").authenticated()
+                        .requestMatchers("/api/expenseCategory/**").authenticated()
+                        .requestMatchers("/api/incomeCategory").authenticated()
+                        .requestMatchers("/api/incomeCategory/**").authenticated()
                         .requestMatchers("/api/notification").authenticated()
                         .requestMatchers("/api/unseennotification").authenticated()
 

@@ -26,7 +26,6 @@ public class IncomeService {
 
     public IncomeDto addIncome(Income income){
         Income newIncome = incomeRepository.save(income);
-        System.out.println(newIncome.getCategory().getName());
         Integer walletId = newIncome.getWallet().getWalletId();
         Optional<Wallet> optionalWallet = walletRepository.findById(walletId);
         if (optionalWallet.isPresent()) {

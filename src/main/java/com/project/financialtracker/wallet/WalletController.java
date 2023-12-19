@@ -24,8 +24,8 @@ public class WalletController {
 
     static final String ID = "userId";
     @GetMapping("/wallet")
-    public ResponseEntity<ResponseWrapper<List<WalletResponse>>> getWalletByUserId(HttpServletRequest request){
-        ResponseWrapper<List<WalletResponse>> response = new ResponseWrapper<>();
+    public ResponseEntity<ResponseWrapper<WalletResponse>> getWalletByUserId(HttpServletRequest request){
+        ResponseWrapper<WalletResponse> response = new ResponseWrapper<>();
         try {
             Integer userId = (Integer) request.getAttribute(ID);
             if (walletService.getWalletByUserId(userId) != null) {
@@ -51,16 +51,10 @@ public class WalletController {
         ResponseWrapper<WalletDto> response = new ResponseWrapper<>();
         try {
             Integer userId = (Integer) request.getAttribute(ID);
-            Wallet wallet = new Wallet();
-            User user = new User();
-            user.setUserId(userId);
-            wallet.setName(walletRequest.getName());
-            wallet.setAmount(walletRequest.getAmount());
-            wallet.setUser(user);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Your Wallet added successfully");
-            response.setResponse(walletService.addWallet(wallet));
+            response.setResponse(walletService.addWallet(walletRequest , userId));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());

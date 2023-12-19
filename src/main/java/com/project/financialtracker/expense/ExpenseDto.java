@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,16 +14,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ExpenseDto {
     private Integer expenseId;
-    private Integer categoryId;
-    private String categoryName;
+    private Integer expenseCategoryId;
+    private String expenseCategoryName;
     private Double amount;
     private String note;
-    private LocalDate date;
+    private LocalDateTime date;
 
     public ExpenseDto(Expense expense) {
         this.expenseId = expense.getExpenseId();
-        this.categoryId = expense.getCategory().getCategoryId();
-        this.categoryName = expense.getCategory().getName();
+        this.expenseCategoryId = expense.getExpenseCategory().getExpenseCategoryId();
+        this.expenseCategoryName = expense.getExpenseCategory().getName();
         this.amount = expense.getAmount();
         this.note = expense.getNote();
         this.date = expense.getDate();

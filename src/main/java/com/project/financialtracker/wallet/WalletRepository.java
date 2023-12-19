@@ -9,5 +9,5 @@ import java.util.List;
 public interface WalletRepository extends JpaRepository<Wallet, Integer> {
 
     @Query(value = "select * from Wallet  where user_id = :userId", nativeQuery= true)
-    List<Wallet> findWalletByUserId(Integer userId);
+    Wallet findWalletByUserId(Integer userId);
 }

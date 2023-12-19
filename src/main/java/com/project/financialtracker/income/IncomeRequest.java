@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class IncomeRequest {
     private Double amount;
-    private Integer categoryId;
-    private LocalDate date;
+    private Integer incomeCategoryId;
+    private LocalDateTime date = LocalDateTime.now();
     private String note;
 }

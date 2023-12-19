@@ -1,5 +1,6 @@
 package com.project.financialtracker.wallet;
 
+import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +15,25 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
-    public List<WalletResponse> getWalletByUserId(Integer userId){
-        List<Wallet> wallets = walletRepository.findWalletByUserId(userId);
-        return wallets.stream().map(wallet -> new WalletResponse(wallet.getWalletId(), wallet.getName(),wallet.getAmount())).toList();
+    public WalletResponse getWalletByUserId(Integer userId){
+        Wallet wallet = walletRepository.findWalletByUserId(userId);
+        return  new WalletResponse(wallet.getWalletId(), wallet.getName(),wallet.getAmount());
     }
 
-    public WalletDto addWallet(Wallet wallet){
-        Wallet newWallet = walletRepository.save(wallet);
-        return new WalletDto(newWallet.getWalletId(), newWallet.getName());
+    public WalletDto addWallet(WalletRequest walletRequest, Integer id){
+        Wallet existingWallet = walletRepository.findWalletByUserId(id);
+        if(existingWallet != null){
+            throw new CustomException("User already has a wallet");
+        }else {
+            Wallet wallet = new Wallet();
+            User user = new User();
+            user.setUserId(id);
+            wallet.setName(walletRequest.getName());
+            wallet.setAmount(walletRequest.getAmount());
+            wallet.setUser(user);
+            Wallet newWallet = walletRepository.save(wallet);
+            return new WalletDto(newWallet.getWalletId(), newWallet.getName());
+        }
     }
 
     public WalletDto updateWallet(Integer id, String name, Integer userId){

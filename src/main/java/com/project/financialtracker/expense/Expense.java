@@ -1,6 +1,6 @@
 package com.project.financialtracker.expense;
 
-import com.project.financialtracker.category.Category;
+import com.project.financialtracker.expensecategory.ExpenseCategory;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.wallet.Wallet;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,8 +22,8 @@ public class Expense {
     private Integer expenseId;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @JoinColumn(name = "expense_category_id", nullable = false)
+    private ExpenseCategory expenseCategory;
 
     @Column(name = "amount")
     private Double amount;
@@ -36,7 +36,7 @@ public class Expense {
     private String note;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -44,9 +44,9 @@ public class Expense {
 
     public Expense(ExpenseRequest expenseRequest,User user) {
         this.user = user;
-        Category newCategory = new Category();
-        newCategory.setCategoryId(expenseRequest.getCategoryId());
-        this.category = newCategory;
+        ExpenseCategory newExpenseCategory = new ExpenseCategory();
+        newExpenseCategory.setExpenseCategoryId(expenseRequest.getExpenseCategoryId());
+        this.expenseCategory = newExpenseCategory;
         this.note = expenseRequest.getNote();
         this.date = expenseRequest.getDate();
         this.amount = expenseRequest.getAmount();

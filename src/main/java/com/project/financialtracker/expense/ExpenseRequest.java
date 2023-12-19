@@ -8,14 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExpenseRequest {
-    private Integer categoryId;
+    private Integer expenseCategoryId;
     private Double amount;
     private String note;
-    private LocalDate date;
+    private LocalDateTime date = LocalDateTime.now();
 }

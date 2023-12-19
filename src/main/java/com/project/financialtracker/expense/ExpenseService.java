@@ -1,7 +1,7 @@
 package com.project.financialtracker.expense;
 
-import com.project.financialtracker.category.Category;
-import com.project.financialtracker.category.CategoryRepository;
+import com.project.financialtracker.expensecategory.ExpenseCategory;
+import com.project.financialtracker.expensecategory.ExpenseCategoryRepo;
 import com.project.financialtracker.notification.Notification;
 import com.project.financialtracker.notification.NotificationRepository;
 import com.project.financialtracker.utils.CustomException;
@@ -17,15 +17,15 @@ import java.util.Optional;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final WalletRepository walletRepository;
-    private final CategoryRepository categoryRepository;
+    private final ExpenseCategoryRepo expenseCategoryRepo;
 
     private final NotificationRepository notificationRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, WalletRepository walletRepository, NotificationRepository notificationRepository,CategoryRepository categoryRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, WalletRepository walletRepository, NotificationRepository notificationRepository,ExpenseCategoryRepo expenseCategoryRepo) {
         this.expenseRepository = expenseRepository;
         this.walletRepository = walletRepository;
         this.notificationRepository = notificationRepository;
-        this.categoryRepository = categoryRepository;
+        this.expenseCategoryRepo = expenseCategoryRepo;
     }
 
     public List<ExpenseDto> getAllExpense(Integer id) {
@@ -52,9 +52,9 @@ public class ExpenseService {
             walletRepository.save(wallet);
         }
         Integer userId = expense.getUser().getUserId();
-        Integer categoryId = expense.getCategory().getCategoryId();
-        Category category = categoryRepository.findByCategoryId(categoryId);
-        Double maxLimit = category.getMaxLimit();
+        Integer categoryId = expense.getExpenseCategory().getExpenseCategoryId();
+        ExpenseCategory expenseCategory = expenseCategoryRepo.findByExpenseCategoryId(categoryId);
+        Double maxLimit = expenseCategory.getMaxLimit();
 
         checkAndSendNotification(userId,categoryId,maxLimit);
 
@@ -64,7 +64,6 @@ public class ExpenseService {
     public void checkAndSendNotification(Integer userId, Integer categoryId, Double maxLimit){
         List<Expense>expenses = expenseRepository.getExpenseByUserIdAndCategoryId(userId, categoryId);
         double totalExpense = expenses.stream().mapToDouble(Expense::getAmount).sum();
-        System.out.println("ASDFAS"+ totalExpense);
         if(totalExpense >= maxLimit){
             String message = "Expense limit exceeded for categoryId: " + categoryId;
             Notification notification = new Notification();
