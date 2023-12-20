@@ -1,5 +1,7 @@
 package com.project.financialtracker.expensecategory;
 
+import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +20,20 @@ public class ExpenseCategoryService {
         return categories.stream().map(category -> new ExpenseCategoryDto(category.getExpenseCategoryId(), category.getName(), category.getMaxLimit())).toList();
     }
 
-    public ExpenseCategoryDto addCategory( ExpenseCategory category){
-        ExpenseCategory newCategory = expenseCategoryRepo.save(category);
-        return new ExpenseCategoryDto(newCategory.getExpenseCategoryId(),newCategory.getName(), newCategory.getMaxLimit());
+    public ExpenseCategoryDto addCategory( ExpenseCategoryReq expenseCategoryReq, Integer id){
+        String name = expenseCategoryReq.getName().trim();
+        ExpenseCategory existingCategory = expenseCategoryRepo.getExpenseCategoryByName(name);
+        if(existingCategory != null){
+           throw new CustomException("Category is already present");
+        }else{
+            User user = new User();
+            user.setUserId(id);
+            ExpenseCategory expenseCategory = new ExpenseCategory(expenseCategoryReq, user);
+            System.out.println("asfasfasf");
+            ExpenseCategory newCategory = expenseCategoryRepo.save(expenseCategory);
+            return new ExpenseCategoryDto(newCategory.getExpenseCategoryId(),newCategory.getName(), newCategory.getMaxLimit());
+        }
+
     }
 
     public ExpenseCategoryDto updateCategory(Integer id, Double maxLimit){

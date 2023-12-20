@@ -4,12 +4,14 @@ import com.project.financialtracker.expensecategory.ExpenseCategory;
 import com.project.financialtracker.expensecategory.ExpenseCategoryRepo;
 import com.project.financialtracker.notification.Notification;
 import com.project.financialtracker.notification.NotificationRepository;
+import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.wallet.Wallet;
 import com.project.financialtracker.wallet.WalletRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +36,6 @@ public class ExpenseService {
     }
 
     public ExpenseDto addExpense(Expense expense) {
-        Expense newExpense = expenseRepository.save(expense);
         Integer walletId = expense.getWallet().getWalletId();
         Optional<Wallet> optionalWallet = walletRepository.findById(walletId);
         if (optionalWallet.isPresent()) {
@@ -51,6 +52,7 @@ public class ExpenseService {
             wallet.setAmount(wallet.getAmount() - expense.getAmount());
             walletRepository.save(wallet);
         }
+        Expense newExpense = expenseRepository.save(expense);
         Integer userId = expense.getUser().getUserId();
         Integer categoryId = expense.getExpenseCategory().getExpenseCategoryId();
         ExpenseCategory expenseCategory = expenseCategoryRepo.findByExpenseCategoryId(categoryId);
@@ -73,6 +75,25 @@ public class ExpenseService {
         }
     }
 
+    public List<ExpenseSummaryDto> getData(Integer id){
+        User user = new User();
+        user.setUserId(id);
+        List<Object[]> result = expenseRepository.getMonthlyExpenseSummaryByCategory(user);
+        List<ExpenseSummaryDto> dtos = new ArrayList<>();
+        for (Object[] row : result) {
+            Integer year = (Integer) row[0];
+            Integer month = (Integer) row[1];
+            String category = (String) row[2];
+            Double totalAmount = (Double) row[3];
+
+            ExpenseSummaryDto dto = new ExpenseSummaryDto(year, month, category, totalAmount);
+            dtos.add(dto);
+        }
+
+        return dtos;
+
+
+    }
 //    public ExpenseDto updateExpense(Integer id, ExpenseRequest updatedExpense){
 //        Optional<Expense> newExpense = expenseRepository.findById(id);
 //        if (newExpense.isPresent()) {

@@ -1,10 +1,18 @@
 package com.project.financialtracker.income;
 
 import com.project.financialtracker.expense.ExpenseDto;
+import com.project.financialtracker.expense.ExpenseSummaryDto;
+import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
 import com.project.financialtracker.wallet.WalletRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,4 +43,23 @@ public class IncomeService {
         }
         return new IncomeDto(newIncome);
     }
+
+    public List<IncomeSummaryDto> getData(Integer id){
+        User user = new User();
+        user.setUserId(id);
+        List<Object[]> result = incomeRepository.getMonthlyIncomeSummaryByCategory(user);
+        List<IncomeSummaryDto> dtos = new ArrayList<>();
+        for (Object[] row : result) {
+            Integer year = (Integer) row[0];
+            Integer month = (Integer) row[1];
+            String category = (String) row[2];
+            Double totalAmount = (Double) row[3];
+
+            IncomeSummaryDto dto = new IncomeSummaryDto(year, month, category, totalAmount);
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+
 }

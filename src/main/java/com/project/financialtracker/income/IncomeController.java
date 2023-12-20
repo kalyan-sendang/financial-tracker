@@ -67,4 +67,23 @@ public class IncomeController {
         }
     }
 
+    @GetMapping("/incomeData")
+    public ResponseEntity<ResponseWrapper<List<IncomeSummaryDto>>> getData(HttpServletRequest request){
+        ResponseWrapper<List<IncomeSummaryDto>> response = new ResponseWrapper<>();
+        try{
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setSuccess(true);
+            response.setMessage("Income Data retrieved Successfully");
+            response.setResponse(incomeService.getData(id));
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            response.setSuccess(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 }

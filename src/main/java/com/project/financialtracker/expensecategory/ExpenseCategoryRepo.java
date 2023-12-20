@@ -10,6 +10,10 @@ public interface ExpenseCategoryRepo extends JpaRepository<ExpenseCategory, Inte
     @Query(value = "select * from expense_category where user_id = :userId ",nativeQuery = true)
     List<ExpenseCategory> getExpenseCategoriesByUserId(Integer userId);
 
+    @Query(value = "select * from expense_category where name ILIKE '%' || :name || '%'",nativeQuery = true)
+    ExpenseCategory getExpenseCategoryByName(String name);
+
+
     @Query(value = "select * from expense_category where expense_category_id = :expenseCategoryId ",nativeQuery = true)
     ExpenseCategory findByExpenseCategoryId(Integer expenseCategoryId);
 

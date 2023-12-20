@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter@NoArgsConstructor
 @AllArgsConstructor
 public class ExpenseCategoryReq{
+
     private String name;
     private Double maxLimit;
 }

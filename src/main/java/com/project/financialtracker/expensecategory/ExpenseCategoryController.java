@@ -1,8 +1,10 @@
 package com.project.financialtracker.expensecategory;
 
 import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,15 +50,18 @@ public class ExpenseCategoryController {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
             Integer id = (Integer) request.getAttribute("userId");
-            User user = new User();
-            user.setUserId(id);
-            ExpenseCategory expenseCategory = new ExpenseCategory(expenseCategoryReq, user);
-            response.setStatusCode(HttpStatus.OK.value());
-            response.setMessage("Expense categories retrieved successfully");
-            response.setSuccess(true);
-            response.setResponse(expenseCategoryService.addCategory(expenseCategory));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
+                response.setStatusCode(HttpStatus.OK.value());
+                response.setMessage("Expense categories retrieved successfully");
+                response.setSuccess(true);
+                response.setResponse(expenseCategoryService.addCategory(expenseCategoryReq, id));
+                return ResponseEntity.ok(response);
+        } catch(CustomException e) {
+            response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
+            response.setMessage("Expense Category is already present");
+            response.setSuccess(false);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage("Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

@@ -1,6 +1,7 @@
 package com.project.financialtracker.expensecategory;
 
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 
 import lombok.Getter;

@@ -19,7 +19,7 @@ public class ExpenseCategory{
     @Column(name = "expense_category_id")
     private Integer expenseCategoryId;
 
-    @Column(name = "name")
+    @Column(name = "name",  unique = true)
     private String name;
 
     @Column(name = "max_limit")

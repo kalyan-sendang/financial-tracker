@@ -2,6 +2,7 @@ package com.project.financialtracker.expense;
 
 import com.project.financialtracker.category.Category;
 import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,6 +64,27 @@ public class ExpenseController {
             response.setSuccess(true);
             response.setMessage("Your wallet is debited by amount RS."+ expense.getAmount());
             response.setResponse(expenseService.addExpense(expense));
+            return ResponseEntity.ok(response);
+        }catch(CustomException e){
+            throw new CustomException("your expense amount exceed the wallet amount");
+        }
+        catch(Exception e){
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage(ERROR);
+            response.setSuccess(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/expenseData")
+    public ResponseEntity<ResponseWrapper<List<ExpenseSummaryDto>>> getData(HttpServletRequest request){
+        ResponseWrapper<List<ExpenseSummaryDto>> response = new ResponseWrapper<>();
+        try{
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setSuccess(true);
+            response.setMessage("Data retrieved Successfully");
+            response.setResponse(expenseService.getData(id));
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
