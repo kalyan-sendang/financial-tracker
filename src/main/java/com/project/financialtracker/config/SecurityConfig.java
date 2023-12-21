@@ -56,6 +56,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/unseennotification").authenticated()
                         .requestMatchers("/api/expenseData").authenticated()
                         .requestMatchers("/api/incomeData").authenticated()
+                        .requestMatchers("/api/totalExpense").authenticated()
+                        .requestMatchers("/api/totalIncome").authenticated()
 
                 );
         //disable cross site resource forgery(CSRF)

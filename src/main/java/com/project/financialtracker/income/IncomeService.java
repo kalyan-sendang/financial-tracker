@@ -44,7 +44,7 @@ public class IncomeService {
         return new IncomeDto(newIncome);
     }
 
-    public List<IncomeSummaryDto> getData(Integer id){
+    public List<IncomeSummaryDto> getDataByCategory(Integer id){
         User user = new User();
         user.setUserId(id);
         List<Object[]> result = incomeRepository.getMonthlyIncomeSummaryByCategory(user);
@@ -61,5 +61,8 @@ public class IncomeService {
         return dtos;
     }
 
+    public Double getTotalExpenseAmount(Integer userId){
+        return incomeRepository.getTotalIncomeByUserId(userId);
+    }
 
 }

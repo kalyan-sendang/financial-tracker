@@ -18,4 +18,7 @@ public interface IncomeRepository extends JpaRepository<Income, Integer> {
             "GROUP BY YEAR(i.date), MONTH(i.date), i.incomeCategory.name " +
             "ORDER BY YEAR(i.date) DESC, MONTH(i.date) DESC, i.incomeCategory.name")
     List<Object[]> getMonthlyIncomeSummaryByCategory(User user);
+
+    @Query(value = "SELECT SUM(amount) FROM Income WHERE user_id = :userId", nativeQuery = true)
+    Double getTotalIncomeByUserId(Integer userId);
 }

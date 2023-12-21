@@ -94,6 +94,25 @@ public class ExpenseController {
         }
     }
 
+    @GetMapping("/totalExpense")
+    public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request){
+        ResponseWrapper<Double> response = new ResponseWrapper<>();
+        try{
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setSuccess(true);
+            response.setMessage("Data retrieved Successfully");
+            Double totalAmount = expenseService.getTotalExpenseAmount(id);
+            response.setResponse(totalAmount);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage(ERROR);
+            response.setSuccess(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 //    @PutMapping("/expense/{expenseId}")
 //    public ResponseEntity<ResponseWrapper<ExpenseDto>> updateExpense(@PathVariable Integer expenseId, @RequestBody ExpenseRequest expenseRequest) {
 //        ResponseWrapper<ExpenseDto> response = new ResponseWrapper<>();

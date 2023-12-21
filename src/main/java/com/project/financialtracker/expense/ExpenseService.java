@@ -91,9 +91,13 @@ public class ExpenseService {
         }
 
         return dtos;
-
-
     }
+
+    public Double getTotalExpenseAmount(Integer userId){
+        return expenseRepository.getTotalExpenseByUserId(userId);
+    }
+
+
 //    public ExpenseDto updateExpense(Integer id, ExpenseRequest updatedExpense){
 //        Optional<Expense> newExpense = expenseRepository.findById(id);
 //        if (newExpense.isPresent()) {
@@ -104,8 +108,6 @@ public class ExpenseService {
 //            expense.setDate(updatedExpense.getDate());
 //            expense.setNote(updatedExpense.getNote());
 //            expense.setAmount(updatedExpense.getAmount());
-//            expense.setMaxAmount(updatedExpense.getMaxAmount());
-//            expense.setCategory(updatedExpense.getCategory());
 //            Expense expense1 = expenseRepository.save(expense);
 //            Integer walletId = expense1.getWallet().getWalletId();
 //            Optional<Wallet> optionalWallet = walletRepository.findById(walletId);

@@ -75,7 +75,7 @@ public class IncomeController {
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Income Data retrieved Successfully");
-            response.setResponse(incomeService.getData(id));
+            response.setResponse(incomeService.getDataByCategory(id));
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -84,6 +84,23 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
+    @GetMapping("/totalIncome")
+    public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request){
+        ResponseWrapper<Double> response = new ResponseWrapper<>();
+        try{
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setSuccess(true);
+            response.setMessage("Data retrieved Successfully");
+            Double totalAmount = incomeService.getTotalExpenseAmount(id);
+            response.setResponse(totalAmount);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            response.setSuccess(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }
