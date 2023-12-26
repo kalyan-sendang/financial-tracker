@@ -1,7 +1,9 @@
 package com.project.financialtracker.incomecategory;
 
 
+import com.project.financialtracker.expensecategory.ExpenseCategoryDto;
 import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -58,6 +60,29 @@ public class IncomeCategoryController {
             response.setResponse(incomeCategoryService.addCategory(incomeCategory));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/incomeCategory/{incomeCategoryId}")
+    public ResponseEntity<ResponseWrapper<List<IncomeCategoryDto>>> deleteExpenseCategory(@PathVariable("incomeCategoryId") int expenseCategoryId,HttpServletRequest request) {
+        ResponseWrapper<List<IncomeCategoryDto>> response = new ResponseWrapper<>();
+        try {
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setMessage("Income categories deleted successfully");
+            response.setSuccess(true);
+            response.setResponse(incomeCategoryService.deleteCategory(expenseCategoryId, id));
+            return ResponseEntity.ok(response);
+        } catch(CustomException e) {
+            response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
+            response.setMessage("Income Category is not found.");
+            response.setSuccess(false);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage("Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

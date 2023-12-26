@@ -26,4 +26,13 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
     @Query(value = "SELECT SUM(amount) FROM Expense WHERE user_id = :userId", nativeQuery = true)
     Double getTotalExpenseByUserId(Integer userId);
 
+    @Query("SELECT e FROM Expense e " +
+            "WHERE MONTH(e.date) = :month " +
+            "AND YEAR(e.date) = :year " +
+            "ORDER BY e.date DESC")
+    List<Expense> getExpensesByMonthAndYear(int month,int year);
+
+    @Query(value = "SELECT SUM(e.amount) FROM Expense e WHERE e.user_id = :userId and e.expense_category_id = :expenseCategoryId", nativeQuery = true)
+    Double getTotalExpenseByCategoryIdAndUserId(Integer userId,Integer expenseCategoryId);
+
 }

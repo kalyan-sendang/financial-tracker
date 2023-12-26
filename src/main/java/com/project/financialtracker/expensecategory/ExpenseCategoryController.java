@@ -44,6 +44,28 @@ public class ExpenseCategoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+    @GetMapping("/expenseCategory/{expenseCategoryId}")
+    public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> getAllCategory(@PathVariable int expenseCategoryId, HttpServletRequest request) {
+        ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
+        try {
+            Integer id = (Integer) request.getAttribute("userId");
+            if (expenseCategoryService.getAllCategory(id) != null) {
+                response.setStatusCode(HttpStatus.OK.value());
+                response.setMessage("Expense category retrieved successfully");
+                response.setSuccess(true);
+                response.setResponse(expenseCategoryService.getACategory(id, expenseCategoryId));
+                return ResponseEntity.ok(response);
+            } else {
+                response.setStatusCode(HttpStatus.NOT_FOUND.value());
+                response.setMessage("Expense Categories not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     @PostMapping("/expenseCategory")
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> addAllExpense(@RequestBody ExpenseCategoryReq expenseCategoryReq, HttpServletRequest request) {
@@ -58,6 +80,51 @@ public class ExpenseCategoryController {
         } catch(CustomException e) {
             response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
             response.setMessage("Expense Category is already present");
+            response.setSuccess(false);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch(Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/expenseCategory/{expenseCategoryId}")
+    public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> updateExpenseCategory(@PathVariable("expenseCategoryId") int expenseCategoryId,@RequestBody ExpenseCategoryReq expenseCategoryReq) {
+        ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
+        try {
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setMessage("Expense categories updated successfully");
+            response.setSuccess(true);
+            response.setResponse(expenseCategoryService.updateCategory(expenseCategoryId, expenseCategoryReq));
+            return ResponseEntity.ok(response);
+        } catch(CustomException e) {
+            response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
+            response.setMessage("Expense Category is not Found.");
+            response.setSuccess(false);
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch(Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping("/expenseCategory/{expenseCategoryId}")
+    public ResponseEntity<ResponseWrapper<List<ExpenseCategoryDto>>> deleteExpenseCategory(@PathVariable("expenseCategoryId") int expenseCategoryId, HttpServletRequest request) {
+        ResponseWrapper<List<ExpenseCategoryDto>> response = new ResponseWrapper<>();
+        try {
+            Integer id = (Integer) request.getAttribute("userId");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setMessage("Expense categories deleted successfully");
+            response.setSuccess(true);
+            response.setResponse(expenseCategoryService.deleteCategory(expenseCategoryId , id));
+            return ResponseEntity.ok(response);
+        } catch(CustomException e) {
+            response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
+            response.setMessage("Expense Category is not found.");
             response.setSuccess(false);
             return ResponseEntity.badRequest().body(response);
         }

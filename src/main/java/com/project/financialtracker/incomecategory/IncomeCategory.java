@@ -27,6 +27,8 @@ public class IncomeCategory{
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    private Boolean status = true;
+
     IncomeCategory(IncomeCategoryReq incomeCategoryReq, User user){
         this.name = incomeCategoryReq.getName();
         this.user = user;

@@ -3,6 +3,7 @@ package com.project.financialtracker.incomecategory;
 import com.project.financialtracker.expensecategory.ExpenseCategory;
 import com.project.financialtracker.expensecategory.ExpenseCategoryDto;
 import com.project.financialtracker.expensecategory.ExpenseCategoryRepo;
+import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class IncomeCategoryService {
     }
 
     public List<IncomeCategoryDto> getAllCategory(Integer id){
-        List<IncomeCategory>categories = incomeCategoryRepo.getExpenseCategoriesByUserId(id);
+        List<IncomeCategory>categories = incomeCategoryRepo.findIncomeCategoriesByUserIdAndStatus(id);
         return categories.stream().map(category -> new IncomeCategoryDto(category.getIncomeCategoryId(), category.getName())).toList();
     }
 
@@ -26,15 +27,17 @@ public class IncomeCategoryService {
         return new IncomeCategoryDto(newCategory.getIncomeCategoryId(),newCategory.getName());
     }
 
-    public IncomeCategoryDto updateCategory(Integer id){
+    public List<IncomeCategoryDto> deleteCategory(Integer id, Integer userId){
         Optional<IncomeCategory> newCategory = incomeCategoryRepo.findById(id);
-        if (newCategory.isPresent()) {
-            IncomeCategory category1 = newCategory.get();
-            category1.setIncomeCategoryId(id);
-            category1.setName(category1.getName());
-            return new IncomeCategoryDto(category1.getIncomeCategoryId(), category1.getName());
+        if(newCategory.isPresent()){
+            IncomeCategory incomeCategory = newCategory.get();
+            incomeCategory.setIncomeCategoryId(id);
+            incomeCategory.setStatus(false);
+            incomeCategoryRepo.save(incomeCategory);
+            List<IncomeCategory> incomeCategories = incomeCategoryRepo.findIncomeCategoriesByUserIdAndStatus(userId);
+            return incomeCategories.stream().map(incomeCategory1 -> new IncomeCategoryDto(incomeCategory1.getIncomeCategoryId(), incomeCategory1.getName())).toList();
         }else{
-            return null;
+            throw new CustomException("Expense Category is not found");
         }
     }
 }

@@ -25,6 +25,8 @@ public class ExpenseCategory{
     @Column(name = "max_limit")
     private Double maxLimit;
 
+    private Boolean status = true;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;

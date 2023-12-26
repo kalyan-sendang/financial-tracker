@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +21,12 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/unseennotification")
-    public ResponseEntity<ResponseWrapper<List<Notification>>> getNewNotifications(HttpServletRequest request){
+    @GetMapping("/newNotification")
+    public ResponseEntity<ResponseWrapper<List<NotificationDto>>> getNewNotifications(HttpServletRequest request){
         Integer userId = (Integer) request.getAttribute("userId");
-        ResponseWrapper<List<Notification>> response = new ResponseWrapper<>();
+        ResponseWrapper<List<NotificationDto>> response = new ResponseWrapper<>();
         try{
-            if(notificationService.getNewNotifications(userId) != null){
+            if(!notificationService.getNewNotifications(userId).isEmpty()){
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Notifications retrieved successfully");
                 response.setSuccess(true);
@@ -46,15 +45,16 @@ public class NotificationController {
     }
 
     @GetMapping("/notification")
-    public ResponseEntity<ResponseWrapper<List<Notification>>> getNotifications(HttpServletRequest request){
+    public ResponseEntity<ResponseWrapper<List<NotificationDto>>> getNotifications(HttpServletRequest request){
         Integer userId = (Integer) request.getAttribute("userId");
-        ResponseWrapper<List<Notification>> response = new ResponseWrapper<>();
+        ResponseWrapper<List<NotificationDto>> response = new ResponseWrapper<>();
         try{
-            if(notificationService.getSeenNotifications(userId) != null){
+            List<NotificationDto> notifications = notificationService.getAllNotifications(userId);
+            if(!notifications.isEmpty()){
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Notifications retrieved successfully");
                 response.setSuccess(true);
-                response.setResponse(notificationService.getSeenNotifications(userId));
+                response.setResponse(notifications);
                 return ResponseEntity.ok(response);
             }else{
                 response.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -63,7 +63,7 @@ public class NotificationController {
             }
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
