@@ -51,14 +51,16 @@ public class IncomeCategoryController {
         ResponseWrapper<IncomeCategoryDto> response = new ResponseWrapper<>();
         try {
             Integer id = (Integer) request.getAttribute("userId");
-            User user = new User();
-            user.setUserId(id);
-            IncomeCategory incomeCategory = new IncomeCategory(incomeCategoryReq, user);
             response.setStatusCode(HttpStatus.OK.value());
-            response.setMessage("Income Categories retrieved successfully");
+            response.setMessage("Income Category added successfully");
             response.setSuccess(true);
-            response.setResponse(incomeCategoryService.addCategory(incomeCategory));
+            response.setResponse(incomeCategoryService.addCategory(incomeCategoryReq, id));
             return ResponseEntity.ok(response);
+        }catch(CustomException e) {
+            response.setStatusCode(HttpStatus.NOT_IMPLEMENTED.value());
+            response.setMessage("Income Category is already present");
+            response.setSuccess(false);
+            return ResponseEntity.badRequest().body(response);
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage("Internal Server Error");

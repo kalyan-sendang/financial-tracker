@@ -1,5 +1,6 @@
 package com.project.financialtracker.income;
 
+import com.project.financialtracker.expense.Expense;
 import com.project.financialtracker.expense.ExpenseDto;
 import com.project.financialtracker.expense.ExpenseSummaryDto;
 import com.project.financialtracker.user.User;
@@ -61,8 +62,11 @@ public class IncomeService {
         return dtos;
     }
 
-    public Double getTotalExpenseAmount(Integer userId){
+    public Double getTotalIncomeAmount(Integer userId){
         return incomeRepository.getTotalIncomeByUserId(userId);
     }
-
+    public List<IncomeDto> getAllIncomePerMonth(Integer userId, Integer month, Integer year){
+        List<Income> incomes = incomeRepository.getExpensesByMonthAndYear(userId, month, year);
+        return incomes.stream().map(IncomeDto::new).toList();
+    }
 }

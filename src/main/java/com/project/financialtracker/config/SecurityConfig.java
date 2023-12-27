@@ -44,7 +44,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/userprofile").authenticated()
                         .requestMatchers("/api/wallet").authenticated()
                         .requestMatchers("/api/wallet/**").authenticated()
-                        .requestMatchers("/api/expense").authenticated()
                         .requestMatchers("/api/expense/**").authenticated()
                         .requestMatchers("/api/income").authenticated()
                         .requestMatchers("/api/income/**").authenticated()
@@ -54,10 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/incomeCategory/**").authenticated()
                         .requestMatchers("/api/notification").authenticated()
                         .requestMatchers("/api/newNotification").authenticated()
-                        .requestMatchers("/api/expenseData").authenticated()
                         .requestMatchers("/api/incomeData").authenticated()
-                        .requestMatchers("/api/totalExpense").authenticated()
-                        .requestMatchers("/api/totalExpense/**").authenticated()
                         .requestMatchers("/api/totalIncome").authenticated()
 
                 );

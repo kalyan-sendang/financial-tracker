@@ -3,6 +3,7 @@ package com.project.financialtracker.incomecategory;
 import com.project.financialtracker.expensecategory.ExpenseCategory;
 import com.project.financialtracker.expensecategory.ExpenseCategoryDto;
 import com.project.financialtracker.expensecategory.ExpenseCategoryRepo;
+import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,19 @@ public class IncomeCategoryService {
         return categories.stream().map(category -> new IncomeCategoryDto(category.getIncomeCategoryId(), category.getName())).toList();
     }
 
-    public IncomeCategoryDto addCategory( IncomeCategory category){
-        IncomeCategory newCategory = incomeCategoryRepo.save(category);
-        return new IncomeCategoryDto(newCategory.getIncomeCategoryId(),newCategory.getName());
+    public IncomeCategoryDto addCategory( IncomeCategoryReq incomeCategoryReq, Integer id){
+        String name = incomeCategoryReq.getName().trim();
+        IncomeCategory existingCategory = incomeCategoryRepo.getCategoriesByUserIdAndNameAndStatus(id, name);
+        if (existingCategory != null) {
+            throw new CustomException("Category is already present");
+        } else {
+            User user = new User();
+            user.setUserId(id);
+            IncomeCategory incomeCategory = new IncomeCategory(incomeCategoryReq, user);
+            IncomeCategory newCategory = incomeCategoryRepo.save(incomeCategory);
+            return new IncomeCategoryDto(newCategory.getIncomeCategoryId(), newCategory.getName());
+        }
+
     }
 
     public List<IncomeCategoryDto> deleteCategory(Integer id, Integer userId){

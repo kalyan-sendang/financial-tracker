@@ -19,4 +19,7 @@ public interface IncomeCategoryRepo extends JpaRepository<IncomeCategory, Intege
     List<IncomeCategory>findIncomeCategoriesByUserIdAndStatus(Integer userId);
     @Query(value = "select * from income_category where user_id = :userId and name ILIKE '%' || :name || '%'", nativeQuery = true)
     IncomeCategory getCategoriesByUserIdAndName(Integer userId, String name);
+
+    @Query(value = "select * from income_category where user_id = :userId and name ILIKE '%' || :name || '%' and status = true", nativeQuery = true)
+    IncomeCategory getCategoriesByUserIdAndNameAndStatus(Integer userId, String name);
 }

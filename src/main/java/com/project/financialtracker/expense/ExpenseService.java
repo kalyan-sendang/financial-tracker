@@ -12,9 +12,7 @@ import com.project.financialtracker.wallet.WalletRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ExpenseService {
@@ -31,8 +29,8 @@ public class ExpenseService {
         this.expenseCategoryRepo = expenseCategoryRepo;
     }
 
-    public List<ExpenseDto> getAllExpense(Integer id) {
-        List<Expense> expenses = expenseRepository.getExpenseByUserId(id);
+    public List<ExpenseDto> getAllExpense( Integer id,String category, String note ) {
+        List<Expense> expenses = expenseRepository.getExpenseByUserId(id, category, note);
         return expenses.stream().map(ExpenseDto::new).toList();
     }
 
@@ -111,20 +109,24 @@ public class ExpenseService {
         return expenseRepository.getTotalExpenseByUserId(userId);
     }
 
-    public Double getTotalCategoryAmount(Integer userId ,Integer expenseCategoryId){
+    public Map<Integer, Double> getTotalCategoryAmount(Integer userId){
 
-        Double expenseAmount = expenseRepository.getTotalExpenseByCategoryIdAndUserId(userId,expenseCategoryId);
-        if(expenseAmount == null){
-            return null;
-        }
-        ExpenseCategory expenseCategory = expenseCategoryRepo.findByExpenseCategoryId(expenseCategoryId);
-        Double maxLimit = expenseCategory.getMaxLimit();
-        String categoryName = expenseCategory.getName();
-        if(expenseAmount >= maxLimit) {
-            checkAndSendNotification(categoryName, userId);
-        }
-        return expenseAmount;
+        List<Object[]> result = expenseRepository.getTotalAmountPerExpenseCategoryByUserId(userId);
 
+        Map<Integer, Double> resultMap = new HashMap<>();
+        for (Object[] row : result) {
+            Integer expenseCategoryId = (Integer) row[0];
+            Double totalAmount = (Double) row[1];
+
+            resultMap.put(expenseCategoryId, totalAmount);
+        }
+        return resultMap;
+
+    }
+
+    public List<ExpenseDto> getAllExpensePerMonth(Integer userId, Integer month, Integer year){
+        List<Expense> expenses = expenseRepository.getExpensesByMonthAndYear(userId, month, year);
+        return expenses.stream().map(ExpenseDto::new).toList();
     }
 
 

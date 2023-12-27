@@ -1,5 +1,6 @@
 package com.project.financialtracker.income;
 
+import com.project.financialtracker.expense.ExpenseDto;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
@@ -13,15 +14,16 @@ import java.util.List;
 
 @Controller
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/income")
 public class IncomeController {
     private final IncomeService incomeService;
 
     public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
+    final Integer YEAR = 2023;
 
-    @GetMapping("/income")
+    @GetMapping()
     public ResponseEntity<ResponseWrapper<List<IncomeDto>>> getIncome(HttpServletRequest request){
         ResponseWrapper<List<IncomeDto>> response = new ResponseWrapper<>();
         try {
@@ -43,7 +45,7 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @PostMapping("/income/{walletId}")
+    @PostMapping("/{walletId}")
     public ResponseEntity<ResponseWrapper<IncomeDto>> addIncome(@PathVariable Integer walletId, @RequestBody IncomeRequest incomeRequest, HttpServletRequest request){
         ResponseWrapper<IncomeDto> response = new ResponseWrapper<>();
         try{
@@ -92,13 +94,36 @@ public class IncomeController {
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Data retrieved Successfully");
-            Double totalAmount = incomeService.getTotalExpenseAmount(id);
+            Double totalAmount = incomeService.getTotalIncomeAmount(id);
             response.setResponse(totalAmount);
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage("Internal Server Error");
             response.setSuccess(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/income-per-month/{month}")
+    public ResponseEntity<ResponseWrapper<List<IncomeDto>>> getAllExpense(@PathVariable Integer month, HttpServletRequest request ) {
+        ResponseWrapper<List<IncomeDto>> response = new ResponseWrapper<>();
+        try {
+            Integer id = (Integer) request.getAttribute("userId");
+            if (incomeService.getAllIncomePerMonth(id, month, YEAR) != null) {
+                response.setStatusCode(HttpStatus.OK.value());
+                response.setMessage("Expense retrieved successfully");
+                response.setSuccess(true);
+                response.setResponse(incomeService.getAllIncomePerMonth(id, month, YEAR));
+                return ResponseEntity.ok(response);
+            } else {
+                response.setStatusCode(HttpStatus.NOT_FOUND.value());
+                response.setMessage("Expenses not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
