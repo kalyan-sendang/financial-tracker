@@ -1,10 +1,6 @@
 package com.project.financialtracker.income;
 
-import com.project.financialtracker.category.Category;
-import com.project.financialtracker.expense.Expense;
-import com.project.financialtracker.expense.ExpenseRequest;
 import com.project.financialtracker.incomecategory.IncomeCategory;
-import com.project.financialtracker.incomecategory.IncomeCategoryReq;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.wallet.Wallet;
 import jakarta.persistence.*;
@@ -12,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

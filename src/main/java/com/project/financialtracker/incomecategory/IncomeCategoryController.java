@@ -1,8 +1,6 @@
 package com.project.financialtracker.incomecategory;
 
 
-import com.project.financialtracker.expensecategory.ExpenseCategoryDto;
-import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,12 +20,15 @@ public class IncomeCategoryController {
     public IncomeCategoryController(IncomeCategoryService incomeCategoryService) {
         this.incomeCategoryService = incomeCategoryService;
     }
+    static final String ERROR = "Internal Server Error";
+
+    static final String ID = "userId";
 
     @GetMapping("/incomeCategory")
     public ResponseEntity<ResponseWrapper<List<IncomeCategoryDto>>> getAllCategory(HttpServletRequest request) {
         ResponseWrapper<List<IncomeCategoryDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (incomeCategoryService.getAllCategory(id) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Income Categories retrieved successfully");
@@ -41,7 +42,7 @@ public class IncomeCategoryController {
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -50,7 +51,7 @@ public class IncomeCategoryController {
     public ResponseEntity<ResponseWrapper<IncomeCategoryDto>> addAllExpense(@RequestBody IncomeCategoryReq incomeCategoryReq, HttpServletRequest request) {
         ResponseWrapper<IncomeCategoryDto> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setMessage("Income Category added successfully");
             response.setSuccess(true);
@@ -63,7 +64,7 @@ public class IncomeCategoryController {
             return ResponseEntity.badRequest().body(response);
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -72,7 +73,7 @@ public class IncomeCategoryController {
     public ResponseEntity<ResponseWrapper<List<IncomeCategoryDto>>> deleteExpenseCategory(@PathVariable("incomeCategoryId") int expenseCategoryId,HttpServletRequest request) {
         ResponseWrapper<List<IncomeCategoryDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setMessage("Income categories deleted successfully");
             response.setSuccess(true);
@@ -86,7 +87,7 @@ public class IncomeCategoryController {
         }
         catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

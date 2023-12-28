@@ -21,7 +21,7 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/newNotification")
+    @GetMapping("/new-notification")
     public ResponseEntity<ResponseWrapper<List<NotificationDto>>> getNewNotifications(HttpServletRequest request){
         Integer userId = (Integer) request.getAttribute("userId");
         ResponseWrapper<List<NotificationDto>> response = new ResponseWrapper<>();

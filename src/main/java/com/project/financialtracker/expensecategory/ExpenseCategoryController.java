@@ -1,10 +1,8 @@
 package com.project.financialtracker.expensecategory;
 
-import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,12 +19,16 @@ public class ExpenseCategoryController {
     public ExpenseCategoryController(ExpenseCategoryService expenseCategoryService) {
         this.expenseCategoryService = expenseCategoryService;
     }
+    static final String ERROR = "Internal Server Error";
+
+
+    static final String ID = "userId";
 
     @GetMapping("/expenseCategory")
     public ResponseEntity<ResponseWrapper<List<ExpenseCategoryDto>>> getAllCategory(HttpServletRequest request) {
         ResponseWrapper<List<ExpenseCategoryDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (expenseCategoryService.getAllCategory(id) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Expense categories retrieved successfully");
@@ -40,7 +42,7 @@ public class ExpenseCategoryController {
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -48,7 +50,7 @@ public class ExpenseCategoryController {
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> getAllCategory(@PathVariable int expenseCategoryId, HttpServletRequest request) {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (expenseCategoryService.getAllCategory(id) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Expense category retrieved successfully");
@@ -62,7 +64,7 @@ public class ExpenseCategoryController {
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -71,7 +73,7 @@ public class ExpenseCategoryController {
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> addAllExpense(@RequestBody ExpenseCategoryReq expenseCategoryReq, HttpServletRequest request) {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Expense categories retrieved successfully");
                 response.setSuccess(true);
@@ -85,7 +87,7 @@ public class ExpenseCategoryController {
         }
         catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -107,7 +109,7 @@ public class ExpenseCategoryController {
         }
         catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -116,7 +118,7 @@ public class ExpenseCategoryController {
     public ResponseEntity<ResponseWrapper<List<ExpenseCategoryDto>>> deleteExpenseCategory(@PathVariable("expenseCategoryId") int expenseCategoryId, HttpServletRequest request) {
         ResponseWrapper<List<ExpenseCategoryDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setMessage("Expense categories deleted successfully");
             response.setSuccess(true);
@@ -130,7 +132,7 @@ public class ExpenseCategoryController {
         }
         catch(Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

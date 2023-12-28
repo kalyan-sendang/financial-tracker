@@ -1,6 +1,5 @@
 package com.project.financialtracker.income;
 
-import com.project.financialtracker.expense.ExpenseDto;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
@@ -21,18 +20,23 @@ public class IncomeController {
     public IncomeController(IncomeService incomeService) {
         this.incomeService = incomeService;
     }
-    final Integer YEAR = 2023;
 
+    static final Integer YEAR = 2023;
+    static final String ERROR = "Internal Server Error";
+
+    static final String ID = "userId";
     @GetMapping()
-    public ResponseEntity<ResponseWrapper<List<IncomeDto>>> getIncome(HttpServletRequest request){
+    public ResponseEntity<ResponseWrapper<List<IncomeDto>>> getIncome(@RequestParam(name = "query", defaultValue = "", required = false) String category,
+                                                                      @RequestParam(name = "query", defaultValue = "", required = false) String note,
+                                                                      HttpServletRequest request){
         ResponseWrapper<List<IncomeDto>> response = new ResponseWrapper<>();
         try {
-            Integer userId = (Integer) request.getAttribute("userId");
-            if (incomeService.getIncome(userId) != null) {
+            Integer userId = (Integer) request.getAttribute(ID);
+            if (incomeService.getIncome(userId, category, note) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setSuccess(true);
                 response.setMessage("Income retrieved successfully");
-                response.setResponse(incomeService.getIncome(userId));
+                response.setResponse(incomeService.getIncome(userId, category, note));
                 return ResponseEntity.ok(response);
             } else {
                 response.setStatusCode(HttpStatus.NOT_FOUND.value());
@@ -41,7 +45,7 @@ public class IncomeController {
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -49,7 +53,7 @@ public class IncomeController {
     public ResponseEntity<ResponseWrapper<IncomeDto>> addIncome(@PathVariable Integer walletId, @RequestBody IncomeRequest incomeRequest, HttpServletRequest request){
         ResponseWrapper<IncomeDto> response = new ResponseWrapper<>();
         try{
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             User user = new User();
             Wallet wallet = new Wallet();
             wallet.setWalletId(walletId);
@@ -64,7 +68,7 @@ public class IncomeController {
             return ResponseEntity.ok(response);
         }catch (Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -73,7 +77,7 @@ public class IncomeController {
     public ResponseEntity<ResponseWrapper<List<IncomeSummaryDto>>> getData(HttpServletRequest request){
         ResponseWrapper<List<IncomeSummaryDto>> response = new ResponseWrapper<>();
         try{
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Income Data retrieved Successfully");
@@ -81,7 +85,7 @@ public class IncomeController {
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             response.setSuccess(false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
@@ -90,7 +94,7 @@ public class IncomeController {
     public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request){
         ResponseWrapper<Double> response = new ResponseWrapper<>();
         try{
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("Data retrieved Successfully");
@@ -99,7 +103,7 @@ public class IncomeController {
             return ResponseEntity.ok(response);
         }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             response.setSuccess(false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
@@ -109,21 +113,21 @@ public class IncomeController {
     public ResponseEntity<ResponseWrapper<List<IncomeDto>>> getAllExpense(@PathVariable Integer month, HttpServletRequest request ) {
         ResponseWrapper<List<IncomeDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (incomeService.getAllIncomePerMonth(id, month, YEAR) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
-                response.setMessage("Expense retrieved successfully");
+                response.setMessage("Income retrieved successfully");
                 response.setSuccess(true);
                 response.setResponse(incomeService.getAllIncomePerMonth(id, month, YEAR));
                 return ResponseEntity.ok(response);
             } else {
                 response.setStatusCode(HttpStatus.NOT_FOUND.value());
-                response.setMessage("Expenses not found");
+                response.setMessage("Incomes not found");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

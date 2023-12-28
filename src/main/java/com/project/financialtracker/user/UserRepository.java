@@ -1,6 +1,5 @@
 package com.project.financialtracker.user;
 
-import com.project.financialtracker.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

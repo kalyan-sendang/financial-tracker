@@ -26,7 +26,9 @@ public class ExpenseController {
 
     static final String ERROR = "Internal Server Error";
 
-    final Integer YEAR = 2023;
+    static final Integer YEAR = 2023;
+
+    static final String ID = "userId";
 
     @GetMapping()
     public ResponseEntity<ResponseWrapper<List<ExpenseDto>>> getAllExpense(@RequestParam(name = "query", defaultValue = "", required = false) String category,
@@ -34,7 +36,7 @@ public class ExpenseController {
                                                                            HttpServletRequest request) {
         ResponseWrapper<List<ExpenseDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (expenseService.getAllExpense(id, category, note) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Expense retrieved successfully");
@@ -57,7 +59,7 @@ public class ExpenseController {
     public ResponseEntity<ResponseWrapper<ExpenseDto>> addExpenses(@PathVariable Integer walletId, @RequestBody ExpenseRequest expenseRequest, HttpServletRequest request) {
         ResponseWrapper<ExpenseDto> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             User user = new User();
             Wallet wallet = new Wallet();
             wallet.setWalletId(walletId);
@@ -91,10 +93,10 @@ public class ExpenseController {
     public ResponseEntity<ResponseWrapper<List<ExpenseSummaryDto>>> getData(HttpServletRequest request) {
         ResponseWrapper<List<ExpenseSummaryDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
-            response.setMessage("Data retrieved Successfully");
+            response.setMessage(" ALl expense data retrieved Successfully");
             response.setResponse(expenseService.getData(id));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -109,10 +111,10 @@ public class ExpenseController {
     public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request) {
         ResponseWrapper<Double> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
-            response.setMessage("Data retrieved Successfully");
+            response.setMessage("Total expense amount retrieved Successfully");
             Double totalAmount = expenseService.getTotalExpenseAmount(id);
             response.setResponse(totalAmount);
             return ResponseEntity.ok(response);
@@ -128,13 +130,13 @@ public class ExpenseController {
     public ResponseEntity<ResponseWrapper<Map<Integer, Double>>> getTotalCategoryAmount(HttpServletRequest request) {
         ResponseWrapper<Map<Integer, Double>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
 
             Map<Integer, Double> expenseList = expenseService.getTotalCategoryAmount(id);
 //
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
-            response.setMessage("Data retrieved Successfully");
+            response.setMessage("Expense Data per Category retrieved Successfully");
             response.setResponse(expenseList);
             return ResponseEntity.ok(response);
 
@@ -150,7 +152,7 @@ public class ExpenseController {
     public ResponseEntity<ResponseWrapper<List<ExpenseDto>>> getAllExpense(@PathVariable Integer month, HttpServletRequest request ) {
         ResponseWrapper<List<ExpenseDto>> response = new ResponseWrapper<>();
         try {
-            Integer id = (Integer) request.getAttribute("userId");
+            Integer id = (Integer) request.getAttribute(ID);
             if (expenseService.getAllExpensePerMonth(id, month, YEAR) != null) {
                 response.setStatusCode(HttpStatus.OK.value());
                 response.setMessage("Expense retrieved successfully");

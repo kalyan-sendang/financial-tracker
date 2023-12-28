@@ -1,8 +1,5 @@
 package com.project.financialtracker.user;
 
-import com.project.financialtracker.user.User;
-import com.project.financialtracker.user.UserDto;
-import com.project.financialtracker.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

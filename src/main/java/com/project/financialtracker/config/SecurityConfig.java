@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/incomeCategory").authenticated()
                         .requestMatchers("/api/incomeCategory/**").authenticated()
                         .requestMatchers("/api/notification").authenticated()
-                        .requestMatchers("/api/newNotification").authenticated()
+                        .requestMatchers("/api/new-notification").authenticated()
                         .requestMatchers("/api/incomeData").authenticated()
                         .requestMatchers("/api/totalIncome").authenticated()
 

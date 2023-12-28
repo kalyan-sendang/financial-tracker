@@ -1,8 +1,5 @@
 package com.project.financialtracker.expensecategory;
 
-import com.project.financialtracker.category.Category;
-import com.project.financialtracker.incomecategory.IncomeCategory;
-import com.project.financialtracker.incomecategory.IncomeCategoryDto;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;

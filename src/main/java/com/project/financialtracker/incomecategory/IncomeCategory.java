@@ -1,6 +1,5 @@
 package com.project.financialtracker.incomecategory;
 
-import com.project.financialtracker.expensecategory.ExpenseCategoryReq;
 import com.project.financialtracker.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

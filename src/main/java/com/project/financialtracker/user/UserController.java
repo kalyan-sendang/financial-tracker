@@ -53,7 +53,7 @@ public class UserController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.NOT_FOUND.value());
-            response.setMessage("Internal Server Error");
+            response.setMessage(ERROR);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }

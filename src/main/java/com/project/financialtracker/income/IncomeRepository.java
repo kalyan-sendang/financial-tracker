@@ -1,6 +1,5 @@
 package com.project.financialtracker.income;
 
-import com.project.financialtracker.expense.Expense;
 import com.project.financialtracker.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface IncomeRepository extends JpaRepository<Income, Integer> {
-    @Query(value="select * from Income where user_id = :userId", nativeQuery = true)
-    List<Income> getIncomeByUserId(Integer userId);
+    @Query(value="select i from Income i where i.user.userId = :userId and (lower(i.incomeCategory.name) like lower(concat('%', :category, '%')) or lower(i.note) like lower(concat('%', :note, '%')))")
+    List<Income> getIncomeByUserId(Integer userId, String category, String note);
 
     @Query(value = "SELECT YEAR(i.date) as year, MONTH(i.date) as month, i.incomeCategory.name as category, SUM(i.amount) as totalAmount " +
             "FROM Income i " +

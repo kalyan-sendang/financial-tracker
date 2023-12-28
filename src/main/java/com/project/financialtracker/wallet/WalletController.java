@@ -1,6 +1,5 @@
 package com.project.financialtracker.wallet;
 
-import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RestController

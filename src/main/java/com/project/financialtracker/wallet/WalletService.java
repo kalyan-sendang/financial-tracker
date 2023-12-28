@@ -4,7 +4,6 @@ import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

@@ -22,14 +22,14 @@ public class ExpenseService {
 
     private final NotificationRepository notificationRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, WalletRepository walletRepository, NotificationRepository notificationRepository,ExpenseCategoryRepo expenseCategoryRepo) {
+    public ExpenseService(ExpenseRepository expenseRepository, WalletRepository walletRepository, NotificationRepository notificationRepository, ExpenseCategoryRepo expenseCategoryRepo) {
         this.expenseRepository = expenseRepository;
         this.walletRepository = walletRepository;
         this.notificationRepository = notificationRepository;
         this.expenseCategoryRepo = expenseCategoryRepo;
     }
 
-    public List<ExpenseDto> getAllExpense( Integer id,String category, String note ) {
+    public List<ExpenseDto> getAllExpense(Integer id, String category, String note) {
         List<Expense> expenses = expenseRepository.getExpenseByUserId(id, category, note);
         return expenses.stream().map(ExpenseDto::new).toList();
     }
@@ -45,8 +45,7 @@ public class ExpenseService {
         Integer userId = expense.getUser().getUserId();
         if (optionalWallet.isPresent()) {
             Wallet wallet = optionalWallet.get();
-            if(wallet.getAmount() < expense.getAmount())
-            {
+            if (wallet.getAmount() < expense.getAmount()) {
                 String message = "Your Wallet amount is less than your expense";
                 Notification notification = new Notification();
                 User user = new User();
@@ -60,34 +59,32 @@ public class ExpenseService {
             Integer categoryId = expense.getExpenseCategory().getExpenseCategoryId();
             ExpenseCategory expenseCategory = expenseCategoryRepo.findByExpenseCategoryId(categoryId);
             Double maxLimit = expenseCategory.getMaxLimit();
-            List<Expense>expenses = expenseRepository.getExpenseByUserIdAndCategoryId(userId, categoryId);
+            List<Expense> expenses = expenseRepository.getExpenseByUserIdAndCategoryId(userId, categoryId);
             double totalExpense = expenses.stream().mapToDouble(Expense::getAmount).sum();
             String categoryName = expenseCategory.getName();
-            if(totalExpense >= maxLimit) {
+            if (totalExpense >= maxLimit || expense.getAmount() > maxLimit) {
                 checkAndSendNotification(categoryName, userId);
-                throw new NewCustomException("Your Expense exceeds the maximum expense limit for "+ categoryName);
+                throw new NewCustomException("Your Expense exceeds the maximum expense limit for " + categoryName);
             }
             wallet.setAmount(wallet.getAmount() - expense.getAmount());
             walletRepository.save(wallet);
-
         }
-
         Expense newExpense = expenseRepository.save(expense);
         return new ExpenseDto(newExpense);
     }
 
-    public void checkAndSendNotification(String categoryName, Integer userId){
-            String message = "Expense limit exceeded for " + categoryName + "category.";
-            User user = new User();
-            user.setUserId(userId);
-            Notification notification = new Notification();
-            notification.setUser(user);
-            notification.setAlerts(message);
-            notification.setTimeStamp(LocalDateTime.now());
-            notificationRepository.save(notification);
+    public void checkAndSendNotification(String categoryName, Integer userId) {
+        String message = "Expense limit exceeded for " + categoryName + "category.";
+        User user = new User();
+        user.setUserId(userId);
+        Notification notification = new Notification();
+        notification.setUser(user);
+        notification.setAlerts(message);
+        notification.setTimeStamp(LocalDateTime.now());
+        notificationRepository.save(notification);
     }
 
-    public List<ExpenseSummaryDto> getData(Integer id){
+    public List<ExpenseSummaryDto> getData(Integer id) {
         User user = new User();
         user.setUserId(id);
         List<Object[]> result = expenseRepository.getMonthlyExpenseSummaryByCategory(user);
@@ -105,11 +102,11 @@ public class ExpenseService {
         return dtos;
     }
 
-    public Double getTotalExpenseAmount(Integer userId){
+    public Double getTotalExpenseAmount(Integer userId) {
         return expenseRepository.getTotalExpenseByUserId(userId);
     }
 
-    public Map<Integer, Double> getTotalCategoryAmount(Integer userId){
+    public Map<Integer, Double> getTotalCategoryAmount(Integer userId) {
 
         List<Object[]> result = expenseRepository.getTotalAmountPerExpenseCategoryByUserId(userId);
 
@@ -124,7 +121,7 @@ public class ExpenseService {
 
     }
 
-    public List<ExpenseDto> getAllExpensePerMonth(Integer userId, Integer month, Integer year){
+    public List<ExpenseDto> getAllExpensePerMonth(Integer userId, Integer month, Integer year) {
         List<Expense> expenses = expenseRepository.getExpensesByMonthAndYear(userId, month, year);
         return expenses.stream().map(ExpenseDto::new).toList();
     }

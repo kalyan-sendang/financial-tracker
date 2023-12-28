@@ -1,7 +1,5 @@
 package com.project.financialtracker.incomecategory;
 
-import com.project.financialtracker.expensecategory.ExpenseCategory;
-import com.project.financialtracker.income.Income;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

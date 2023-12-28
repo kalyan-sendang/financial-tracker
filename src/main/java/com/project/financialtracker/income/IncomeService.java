@@ -1,17 +1,9 @@
 package com.project.financialtracker.income;
 
-import com.project.financialtracker.expense.Expense;
-import com.project.financialtracker.expense.ExpenseDto;
-import com.project.financialtracker.expense.ExpenseSummaryDto;
 import com.project.financialtracker.user.User;
-import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
 import com.project.financialtracker.wallet.WalletRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +20,8 @@ public class IncomeService {
         this.walletRepository = walletRepository;
     }
 
-    public List<IncomeDto> getIncome(Integer userId){
-        List<Income> incomeList = incomeRepository.getIncomeByUserId(userId);
+    public List<IncomeDto> getIncome(Integer userId, String category, String note){
+        List<Income> incomeList = incomeRepository.getIncomeByUserId(userId, category, note);
         return incomeList.stream().map(IncomeDto::new).toList();
     }
 
