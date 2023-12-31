@@ -59,9 +59,13 @@ public class ExpenseService {
             Integer categoryId = expense.getExpenseCategory().getExpenseCategoryId();
             ExpenseCategory expenseCategory = expenseCategoryRepo.findByExpenseCategoryId(categoryId);
             Double maxLimit = expenseCategory.getMaxLimit();
-            List<Expense> expenses = expenseRepository.getExpenseByUserIdAndCategoryId(userId, categoryId);
+            LocalDateTime currentDate = expense.getDate();
+            Integer month = currentDate.getMonthValue();
+            Integer year = currentDate.getYear();
+            List<Expense> expenses = expenseRepository.getExpenseByUserIdAndCategoryIdAndYearAndMonth(userId, categoryId, year, month);
             double totalExpense = expenses.stream().mapToDouble(Expense::getAmount).sum();
             String categoryName = expenseCategory.getName();
+
             if (totalExpense >= maxLimit || expense.getAmount() > maxLimit) {
                 checkAndSendNotification(categoryName, userId);
                 throw new NewCustomException("Your Expense exceeds the maximum expense limit for " + categoryName);
@@ -107,7 +111,6 @@ public class ExpenseService {
     }
 
     public Map<Integer, Double> getTotalCategoryAmount(Integer userId) {
-
         List<Object[]> result = expenseRepository.getTotalAmountPerExpenseCategoryByUserId(userId);
 
         Map<Integer, Double> resultMap = new HashMap<>();

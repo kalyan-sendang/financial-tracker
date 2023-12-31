@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Controller
 @RestController
 @RequestMapping("/api/expense")
 public class ExpenseController {
@@ -89,7 +88,7 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping("/expenseData")
+    @GetMapping("/expense-data")
     public ResponseEntity<ResponseWrapper<List<ExpenseSummaryDto>>> getData(HttpServletRequest request) {
         ResponseWrapper<List<ExpenseSummaryDto>> response = new ResponseWrapper<>();
         try {
@@ -107,7 +106,7 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping("/totalExpense")
+    @GetMapping("/total-expense")
     public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request) {
         ResponseWrapper<Double> response = new ResponseWrapper<>();
         try {

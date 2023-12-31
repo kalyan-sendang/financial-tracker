@@ -24,7 +24,7 @@ public class IncomeCategoryController {
 
     static final String ID = "userId";
 
-    @GetMapping("/incomeCategory")
+    @GetMapping("/income-category")
     public ResponseEntity<ResponseWrapper<List<IncomeCategoryDto>>> getAllCategory(HttpServletRequest request) {
         ResponseWrapper<List<IncomeCategoryDto>> response = new ResponseWrapper<>();
         try {
@@ -47,7 +47,7 @@ public class IncomeCategoryController {
         }
     }
 
-    @PostMapping("/incomeCategory")
+    @PostMapping("/income-category")
     public ResponseEntity<ResponseWrapper<IncomeCategoryDto>> addAllExpense(@RequestBody IncomeCategoryReq incomeCategoryReq, HttpServletRequest request) {
         ResponseWrapper<IncomeCategoryDto> response = new ResponseWrapper<>();
         try {
@@ -69,7 +69,7 @@ public class IncomeCategoryController {
         }
     }
 
-    @PutMapping("/incomeCategory/{incomeCategoryId}")
+    @PutMapping("/income-category/{incomeCategoryId}")
     public ResponseEntity<ResponseWrapper<List<IncomeCategoryDto>>> deleteExpenseCategory(@PathVariable("incomeCategoryId") int expenseCategoryId,HttpServletRequest request) {
         ResponseWrapper<List<IncomeCategoryDto>> response = new ResponseWrapper<>();
         try {
