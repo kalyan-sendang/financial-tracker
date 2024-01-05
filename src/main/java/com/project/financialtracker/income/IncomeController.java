@@ -21,7 +21,7 @@ public class IncomeController {
         this.incomeService = incomeService;
     }
 
-    static final Integer YEAR = 2023;
+    static final Integer YEAR = 2024;
     static final String ERROR = "Internal Server Error";
 
     static final String ID = "userId";

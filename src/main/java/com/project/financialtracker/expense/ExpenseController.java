@@ -26,7 +26,7 @@ public class ExpenseController {
 
     static final String ERROR = "Internal Server Error";
 
-    static final Integer YEAR = 2023;
+    static final Integer YEAR = 2024;
 
     static final String ID = "userId";
 
