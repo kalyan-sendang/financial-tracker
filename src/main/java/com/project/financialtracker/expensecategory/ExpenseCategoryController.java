@@ -24,7 +24,7 @@ public class ExpenseCategoryController {
 
     static final String ID = "userId";
 
-    @GetMapping("/expenseCategory")
+    @GetMapping("/expense-category")
     public ResponseEntity<ResponseWrapper<List<ExpenseCategoryDto>>> getAllCategory(HttpServletRequest request) {
         ResponseWrapper<List<ExpenseCategoryDto>> response = new ResponseWrapper<>();
         try {
@@ -46,7 +46,7 @@ public class ExpenseCategoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @GetMapping("/expenseCategory/{expenseCategoryId}")
+    @GetMapping("/expense-category/{expenseCategoryId}")
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> getAllCategory(@PathVariable int expenseCategoryId, HttpServletRequest request) {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
@@ -69,13 +69,13 @@ public class ExpenseCategoryController {
         }
     }
 
-    @PostMapping("/expenseCategory")
+    @PostMapping("/expense-category")
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> addAllExpense(@RequestBody ExpenseCategoryReq expenseCategoryReq, HttpServletRequest request) {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
             Integer id = (Integer) request.getAttribute(ID);
                 response.setStatusCode(HttpStatus.OK.value());
-                response.setMessage("Expense categories retrieved successfully");
+                response.setMessage("Expense categories saved successfully");
                 response.setSuccess(true);
                 response.setResponse(expenseCategoryService.addCategory(expenseCategoryReq, id));
                 return ResponseEntity.ok(response);
@@ -92,7 +92,7 @@ public class ExpenseCategoryController {
         }
     }
 
-    @PutMapping("/expenseCategory/{expenseCategoryId}")
+    @PutMapping("/expense-category/{expenseCategoryId}")
     public ResponseEntity<ResponseWrapper<ExpenseCategoryDto>> updateExpenseCategory(@PathVariable("expenseCategoryId") int expenseCategoryId,@RequestBody ExpenseCategoryReq expenseCategoryReq) {
         ResponseWrapper<ExpenseCategoryDto> response = new ResponseWrapper<>();
         try {
@@ -114,7 +114,7 @@ public class ExpenseCategoryController {
         }
     }
 
-    @DeleteMapping("/expenseCategory/{expenseCategoryId}")
+    @DeleteMapping("/expense-category/{expenseCategoryId}")
     public ResponseEntity<ResponseWrapper<List<ExpenseCategoryDto>>> deleteExpenseCategory(@PathVariable("expenseCategoryId") int expenseCategoryId, HttpServletRequest request) {
         ResponseWrapper<List<ExpenseCategoryDto>> response = new ResponseWrapper<>();
         try {

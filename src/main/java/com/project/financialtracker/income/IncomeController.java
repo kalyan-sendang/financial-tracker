@@ -73,7 +73,7 @@ public class IncomeController {
         }
     }
 
-    @GetMapping("/incomeData")
+    @GetMapping("/income-data")
     public ResponseEntity<ResponseWrapper<List<IncomeSummaryDto>>> getData(HttpServletRequest request){
         ResponseWrapper<List<IncomeSummaryDto>> response = new ResponseWrapper<>();
         try{
@@ -90,7 +90,7 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @GetMapping("/totalIncome")
+    @GetMapping("/total-income")
     public ResponseEntity<ResponseWrapper<Double>> getTotalAmount(HttpServletRequest request){
         ResponseWrapper<Double> response = new ResponseWrapper<>();
         try{
