@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/totalIncome").authenticated()
                         .requestMatchers(("/api/saving")).authenticated()
                         .requestMatchers("/api/saving/**").authenticated()
+                        .requestMatchers("api/planned-payment").authenticated()
+                        .requestMatchers("api/planned-payment/**").authenticated()
 
                 );
         //disable cross site resource forgery(CSRF)

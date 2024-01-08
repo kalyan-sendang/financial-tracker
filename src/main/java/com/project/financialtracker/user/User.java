@@ -31,7 +31,7 @@ public class User {
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Invalid email format")
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotBlank(message = "Password is mandatory")
@@ -48,4 +48,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Expense> expenses;
+
+    public User(Integer userId) {
+        this.userId = userId;
+    }
 }
