@@ -1,6 +1,7 @@
 package com.project.financialtracker.plannedpayment;
 
 import com.project.financialtracker.user.User;
+import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,8 +59,27 @@ public class PlannedPaymentController {
             response.setSuccess(true);
             response.setResponse(plannedPaymentService.setPayment(plannedPayment));
             return ResponseEntity.ok(response);
-
+        } catch (CustomException ex) {
+            response.setStatusCode(HttpStatus.SERVICE_UNAVAILABLE.value());
+            response.setMessage("Payment is already initiated");
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
         } catch (Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PostMapping("/pay/{id}")
+    public ResponseEntity<ResponseWrapper<PlannedPaymentDto>> payScheduledPayment(@PathVariable Integer id) {
+        ResponseWrapper<PlannedPaymentDto> response = new ResponseWrapper<>();
+        try {
+            response.setMessage("Payment successfully initiated");
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setSuccess(true);
+            response.setResponse(plannedPaymentService.payScheduledPayment(id));
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage("Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

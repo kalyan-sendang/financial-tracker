@@ -40,6 +40,9 @@ public class PlannedPayment {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "pending")
+    private Boolean pending = true;
+
     @Column(name = "cron_date", nullable = false)
     private LocalDateTime date;
 
