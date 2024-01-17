@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api")
-@Tag(name = "User Controller", description = "This is user Controller in user")
+@Tag(name = "User Controller", description = "This is user api for user")
 public class UserController {
     private final UserService userService;
 

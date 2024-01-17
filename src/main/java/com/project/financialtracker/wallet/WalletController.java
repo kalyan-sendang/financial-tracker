@@ -2,6 +2,7 @@ package com.project.financialtracker.wallet;
 
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Wallet Controller", description = "This is Wallet api for wallet")
 public class WalletController {
 
     private final WalletService walletService;
