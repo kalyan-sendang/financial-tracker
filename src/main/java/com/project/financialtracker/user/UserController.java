@@ -1,6 +1,10 @@
 package com.project.financialtracker.user;
 
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,6 +17,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api")
+@Tag(name = "User Controller", description = "This is user Controller in user")
 public class UserController {
     private final UserService userService;
 
@@ -43,6 +48,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+    @Operation(
+            summary = "Fetch all users",
+            description = "fetches all user entities and their data from data source")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "400", description = "Not found"),
+    })
     @GetMapping("/user")
     public ResponseEntity<ResponseWrapper<List<UserDto>>> getAllUser() {
         ResponseWrapper<List<UserDto>> response = new ResponseWrapper<>();

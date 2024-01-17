@@ -2,6 +2,7 @@ package com.project.financialtracker.expensecategory;
 
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Controller
 @RestController
+@Tag(name = "Expense Category Controller", description = "This is Expense Category api for Expense operation")
 @RequestMapping("/api")
 public class ExpenseCategoryController {
     private final ExpenseCategoryService expenseCategoryService;

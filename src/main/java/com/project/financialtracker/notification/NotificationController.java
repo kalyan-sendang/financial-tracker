@@ -1,6 +1,7 @@
 package com.project.financialtracker.notification;
 
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Notification Controller", description = "This is notification api in notification operation")
 public class NotificationController {
     private final NotificationService notificationService;
 

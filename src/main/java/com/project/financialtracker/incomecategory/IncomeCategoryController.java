@@ -3,6 +3,7 @@ package com.project.financialtracker.incomecategory;
 
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Income Category Controller", description = "This is Income Category api in Income operation")
 public class IncomeCategoryController {
     private final IncomeCategoryService incomeCategoryService;
 

@@ -3,6 +3,7 @@ package com.project.financialtracker.income;
 import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api/income")
+@Tag(name = "Income Controller", description = "This is Income api in Income operation")
 public class IncomeController {
     private final IncomeService incomeService;
 

@@ -5,6 +5,7 @@ import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.utils.NewCustomException;
 import com.project.financialtracker.wallet.Wallet;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/expense")
+@Tag(name = "Expense Controller", description = "This is Expense api for in Expense operation")
 public class ExpenseController {
     private final ExpenseService expenseService;
 

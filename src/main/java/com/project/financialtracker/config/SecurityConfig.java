@@ -59,6 +59,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/saving/**").authenticated()
                         .requestMatchers("api/planned-payment").authenticated()
                         .requestMatchers("api/planned-payment/**").authenticated()
+                        .requestMatchers("swagger-ui/**").permitAll()
+                        .requestMatchers("v3/**").permitAll()
 
                 );
         //disable cross site resource forgery(CSRF)

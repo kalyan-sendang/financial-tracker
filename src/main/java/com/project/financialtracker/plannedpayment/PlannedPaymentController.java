@@ -4,6 +4,7 @@ import com.project.financialtracker.user.User;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
 import com.project.financialtracker.wallet.Wallet;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/planned-payment")
+@Tag(name = "Planned Payment Controller", description = "This is Planned Payment api for schedule payment")
 public class PlannedPaymentController {
     private final PlannedPaymentService plannedPaymentService;
 

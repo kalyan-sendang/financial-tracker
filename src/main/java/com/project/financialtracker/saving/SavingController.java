@@ -2,6 +2,7 @@ package com.project.financialtracker.saving;
 
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Saving Controller", description = "This is saving api in saving")
 public class SavingController {
 
     private final SavingService savingService;

@@ -4,6 +4,10 @@ import com.project.financialtracker.token.JwtService;
 import com.project.financialtracker.token.TokenResponse;
 import com.project.financialtracker.utils.CustomException;
 import com.project.financialtracker.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @RestController
 @RequestMapping("api/auth")
+@Tag(name = "Auth Controller", description = "This is Auth api for authentication")
 public class AuthController {
 
     private final UserService userService;
@@ -33,7 +38,15 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
+    @Operation(
+            summary = "create new user",
+            description = "this is a user api")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success | OK"),
+            @ApiResponse(responseCode = "401", description = "Not authorized"),
+            @ApiResponse(responseCode = "201", description = "new user is created")
 
+    })
     @PostMapping("/user/register")
     public ResponseEntity<ResponseWrapper<UserDto>> insertUser(@Valid @RequestBody User user) {
         ResponseWrapper<UserDto> response = new ResponseWrapper<>();
