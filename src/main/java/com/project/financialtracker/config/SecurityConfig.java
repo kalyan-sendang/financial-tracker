@@ -40,6 +40,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(c -> c.configurationSource(corsFilter()))
                 .authorizeHttpRequests(configurer -> configurer.requestMatchers("/api/auth/user/**").permitAll()
+//                        .requestMatchers("/financialtracker/**").permitAll()
+                        .requestMatchers("/api/user").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/userprofile").authenticated()
                         .requestMatchers("/api/wallet").authenticated()
@@ -61,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("api/planned-payment/**").authenticated()
                         .requestMatchers("swagger-ui/**").permitAll()
                         .requestMatchers("v3/**").permitAll()
-                        .requestMatchers("/financialtracker/**").permitAll()
+
 
                 );
         //disable cross site resource forgery(CSRF)
