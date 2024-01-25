@@ -16,13 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@Controller
+import java.util.Objects;
+
+
 @RestController
 @RequestMapping("api/auth")
 @Tag(name = "Auth Controller", description = "This is Auth api for authentication")
@@ -48,13 +47,27 @@ public class AuthController {
 
     })
     @PostMapping("/user/register")
-    public ResponseEntity<ResponseWrapper<UserDto>> insertUser(@Valid @RequestBody User user) {
+    public ResponseEntity<ResponseWrapper<UserDto>> insertUser(@Valid @ModelAttribute UserRegistrationDto registrationDto, @RequestParam("image")MultipartFile image) {
         ResponseWrapper<UserDto> response = new ResponseWrapper<>();
         try {
+            if(image.isEmpty()){
+                response.setSuccess(false);
+                response.setStatusCode(HttpStatus.NO_CONTENT.value());
+                response.setMessage("Image Not Found, Upload Image");
+                response.setResponse(null);
+                return ResponseEntity.ok(response);
+            }
+            if (!Objects.equals(image.getContentType(), "image/jpeg")){
+                response.setSuccess(false);
+                response.setStatusCode(HttpStatus.NO_CONTENT.value());
+                response.setMessage("Only JPG and JPEG is supported");
+                response.setResponse(null);
+                return ResponseEntity.ok(response);
+            }
             response.setStatusCode(HttpStatus.OK.value());
             response.setSuccess(true);
             response.setMessage("User registered successfully");
-            response.setResponse(userService.registerUser(user));
+            response.setResponse(userService.registerUser(registrationDto, image));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.setStatusCode(HttpStatus.NOT_FOUND.value());

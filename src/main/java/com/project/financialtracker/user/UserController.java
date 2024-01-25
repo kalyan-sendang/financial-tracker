@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -100,7 +99,9 @@ public class UserController {
         String userName = (String) request.getAttribute("userName");
         String email = (String) request.getAttribute("email");
         String profession = (String) request.getAttribute("profession");
-        UserProfile userProfile = new UserProfile(userId, userName, email, profession);
+        User user = userService.getAUserById(userId);
+        String image = user.getImageUrl();
+        UserProfile userProfile = new UserProfile(userId, userName, email, profession, image);
         return ResponseEntity.ok(userProfile);
     }
 }

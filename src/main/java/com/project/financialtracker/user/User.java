@@ -49,6 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Expense> expenses;
 
+    @Column(name = "image")
+    private String imageUrl;
+
     public User(Integer userId) {
         this.userId = userId;
     }
